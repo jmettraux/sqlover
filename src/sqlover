@@ -1,0 +1,13 @@
+#! /usr/bin/env sh
+
+#
+# src/sqlover
+#
+# vim: set ft=sh:
+#
+
+SELF=`readlink $0`
+N=`basename "$0"`
+
+ruby $SELF.rb $*
+
