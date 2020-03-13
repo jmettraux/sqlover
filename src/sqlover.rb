@@ -24,11 +24,15 @@ counts = %w[ select insert update delete begin commit ]
   .inject({}) { |h, m|
     h[m.to_sym] = { count: 0, min: 1.0, max: 0.0, maxes: 0 }
     h }
-worst = [ max, '' ]
+worst = [ max, nil ]
 
 while line = (fi.readline rescue nil)
 
-  if mt = line.match(/^(\d+-[A-Za-z]+-\d{4} \d{2}:\d{2}:\d{2}\.\d+) /)
+  mt =
+    line.match(/^(\d+-[A-Za-z]+-\d{4} \d{2}:\d{2}:\d{2}\.\d+) /) ||
+    line.match(/ \[(20[^\] ]+) #\d+\] /)
+
+  if mt
 
     t = Time.parse(mt[1])
 
@@ -87,9 +91,13 @@ puts
 puts "t0: #{t0}"
 puts "t9: #{t9}"
 puts
-pp counts
+puts "max: #{max}"
 puts
-puts worst[0]
-puts worst[1]
+pp counts
+if worst[1]
+  puts
+  puts worst[0]
+  puts worst[1]
+end
 puts
 
